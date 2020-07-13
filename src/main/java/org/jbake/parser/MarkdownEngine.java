@@ -1,5 +1,6 @@
 package org.jbake.parser;
 
+import com.tqd.flexmark.PlantUMLExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.PegdownExtensions;
@@ -40,10 +41,10 @@ public class MarkdownEngine extends MarkupEngine {
         }
 
         DataHolder options = PegdownOptionsAdapter.flexmarkOptions(extensions);
-
+        options.get(Parser.EXTENSIONS).add(PlantUMLExtension.create());
         Parser parser = Parser.builder(options).build();
         HtmlRenderer renderer = HtmlRenderer.builder(options).build();
-
+        
         Document document = parser.parse(context.getBody());
         context.setBody(renderer.render(document));
     }
