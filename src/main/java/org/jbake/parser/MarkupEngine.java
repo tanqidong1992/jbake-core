@@ -316,9 +316,10 @@ public abstract class MarkupEngine implements ParserEngine {
         for (String line : context.getFileLines()) {
             if (inBody) {
                 body.append(line).append("\n");
-            }
-            if (line.equals(configuration.getHeaderSeparator())) {
+            }else if(line.equals(configuration.getHeaderSeparator())) {
                 inBody = true;
+            }else {
+            	//print header line
             }
         }
 
