@@ -1,16 +1,22 @@
 package org.jbake.parser;
 
 import com.tqd.flexmark.PlantUMLExtension;
+import com.tqd.flexmark.toc.Toc;
+import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.PegdownExtensions;
 import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.data.DataHolder;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,10 +52,30 @@ public class MarkdownEngine extends MarkupEngine {
         HtmlRenderer renderer = HtmlRenderer.builder(options).build();
         
         Document document = parser.parse(context.getBody());
+        
         context.setBody(renderer.render(document));
+        //render 之后,才会有html id
+        parseToc(document,context);
+        
     }
 
-    private int extensionFor(String name) {
+    private void parseToc(Document document,final ParserContext context) {
+		
+    	List<Heading> headings=new ArrayList<>();
+        document.getChildIterator().forEachRemaining(n->{
+       	  if(n instanceof Heading) {
+       		  headings.add((Heading)n);
+       	  }
+         });
+        Toc toc=new Toc();
+        for(Heading h:headings) {
+            toc.addHeading(h); 
+        }
+        context.setToc(toc);
+		
+	}
+
+	private int extensionFor(String name) {
         int extension = PegdownExtensions.NONE;
 
         try {

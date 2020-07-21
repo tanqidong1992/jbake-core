@@ -2,6 +2,10 @@ package org.jbake.parser;
 
 import org.jbake.app.Crawler;
 import org.jbake.app.configuration.JBakeConfiguration;
+import org.json.simple.JSONObject;
+
+import com.google.gson.GsonBuilder;
+import com.tqd.flexmark.toc.Toc;
 
 import java.io.File;
 import java.util.Date;
@@ -56,7 +60,13 @@ public class ParserContext {
     public void setBody(String str) {
         documentModel.put(Crawler.Attributes.BODY, str);
     }
-
+    
+    public void setToc(Toc toc) {
+    	 
+    	String s=new GsonBuilder().setPrettyPrinting().create().toJson(toc);
+        documentModel.put(Crawler.Attributes.TOC, s);
+    }
+    
     public Object getDate() {
         return getDocumentModel().get(Crawler.Attributes.DATE);
     }

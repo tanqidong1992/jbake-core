@@ -258,6 +258,7 @@ public class Crawler {
         public static final String ALLTAGS = "alltags";
         public static final String PUBLISHED_DATE = "published_date";
         public static final String BODY = "body";
+        public static final String TOC = "toc";
         public static final String DB = "db";
 
         private Attributes() {
