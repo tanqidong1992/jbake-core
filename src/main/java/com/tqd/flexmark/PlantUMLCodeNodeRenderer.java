@@ -9,35 +9,17 @@ import org.jetbrains.annotations.Nullable;
 
 import com.credibledoc.plantuml.svggenerator.SvgGeneratorService;
 import com.vladsch.flexmark.ast.*;
-import com.vladsch.flexmark.ast.util.LineCollectingVisitor;
-import com.vladsch.flexmark.ast.util.ReferenceRepository;
-import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.html.HtmlRendererOptions;
 import com.vladsch.flexmark.html.HtmlWriter;
-import com.vladsch.flexmark.parser.ListOptions;
 import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.util.ast.Document;
-import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.ast.NonRenderingInline;
-import com.vladsch.flexmark.util.ast.TextCollectingVisitor;
 import com.vladsch.flexmark.util.data.DataHolder;
-import com.vladsch.flexmark.util.html.Attribute;
-import com.vladsch.flexmark.util.html.Attributes;
 import com.vladsch.flexmark.util.misc.CharPredicate;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
-import com.vladsch.flexmark.util.sequence.Escaping;
-import com.vladsch.flexmark.util.sequence.Range;
-import org.jetbrains.annotations.NotNull;
 
-import com.vladsch.flexmark.html.HtmlRendererOptions;
-import com.vladsch.flexmark.html.HtmlWriter;
 import com.vladsch.flexmark.html.renderer.AttributablePart;
-import com.vladsch.flexmark.html.renderer.CoreNodeRenderer;
 import com.vladsch.flexmark.html.renderer.NodeRenderer;
 import com.vladsch.flexmark.html.renderer.NodeRendererContext;
 import com.vladsch.flexmark.html.renderer.NodeRendererFactory;
 import com.vladsch.flexmark.html.renderer.NodeRenderingHandler;
-import com.vladsch.flexmark.util.sequence.BasedSequence;
 
 public class PlantUMLCodeNodeRenderer implements NodeRenderer{
 	   final public static AttributablePart LOOSE_LIST_ITEM = new AttributablePart("LOOSE_LIST_ITEM");
