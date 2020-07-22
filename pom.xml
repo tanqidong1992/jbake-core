@@ -65,6 +65,13 @@
 		<url>https://github.com/jbake-org/jbake/issues</url>
 	</issueManagement>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>29.0-jre</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -313,36 +320,36 @@
 			<artifactId>plantuml-core</artifactId>
 			<version>1.0.19</version>
 		</dependency>
-		        <dependency>
-            <groupId>net.sourceforge.plantuml</groupId>
-            <artifactId>plantuml</artifactId>
-            <version>1.2020.15</version>
-        </dependency>
-        <dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.8.6</version>
-</dependency>
+		<dependency>
+			<groupId>net.sourceforge.plantuml</groupId>
+			<artifactId>plantuml</artifactId>
+			<version>1.2020.15</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
 	</dependencies>
-	
+
 	<build>
-	
-	<plugins>
-	 <plugin>
-        <groupId>com.hngd.tool</groupId>
-        <artifactId>service-maven-plugin</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
-        <executions>
-            <execution>
-                <id>service-package</id>
-                <goals>
-                    <goal>service-package</goal>
-                </goals>
-                <phase>package</phase>
-            </execution>
-        </executions>
-    </plugin>
-	</plugins>
+
+		<plugins>
+			<plugin>
+				<groupId>com.hngd.tool</groupId>
+				<artifactId>service-maven-plugin</artifactId>
+				<version>0.1.0-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>service-package</id>
+						<goals>
+							<goal>service-package</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 	<repositories>
 		<repository>

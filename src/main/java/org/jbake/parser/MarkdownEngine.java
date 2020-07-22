@@ -2,6 +2,7 @@ package org.jbake.parser;
 
 import com.tqd.flexmark.PlantUMLExtension;
 import com.tqd.flexmark.toc.Toc;
+import com.tqd.flexmark.utils.FlexmarkExtensionUtils;
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
@@ -9,7 +10,10 @@ import com.vladsch.flexmark.parser.PegdownExtensions;
 import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -46,15 +50,17 @@ public class MarkdownEngine extends MarkupEngine {
             }
         }
 
-        DataHolder options = PegdownOptionsAdapter.flexmarkOptions(extensions);
-        options.get(Parser.EXTENSIONS).add(PlantUMLExtension.create());
+        DataHolder options1 = PegdownOptionsAdapter.flexmarkOptions(extensions);
+        MutableDataSet options=new MutableDataSet(options1);
+        Parser.EXTENSIONS.get(options).addAll(FlexmarkExtensionUtils.getAllExtensionInClasspath());
+        HtmlRenderer.RENDER_HEADER_ID.set( options, true);
         Parser parser = Parser.builder(options).build();
         HtmlRenderer renderer = HtmlRenderer.builder(options).build();
         
         Document document = parser.parse(context.getBody());
         
         context.setBody(renderer.render(document));
-        //render Ö®ºó,²Å»áÓÐhtml id
+        //render Ö®ï¿½ï¿½,ï¿½Å»ï¿½ï¿½ï¿½html id
         parseToc(document,context);
         
     }
