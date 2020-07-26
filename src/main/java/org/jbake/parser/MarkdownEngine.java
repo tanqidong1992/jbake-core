@@ -1,6 +1,7 @@
 package org.jbake.parser;
 
 import com.tqd.flexmark.PlantUMLExtension;
+import com.tqd.flexmark.encryptor.internal.ToBeEncrypteNodeRender;
 import com.tqd.flexmark.toc.Toc;
 import com.tqd.flexmark.utils.FlexmarkExtensionUtils;
 import com.vladsch.flexmark.ast.Heading;
@@ -54,7 +55,16 @@ public class MarkdownEngine extends MarkupEngine {
         MutableDataSet options=new MutableDataSet(options1);
         Parser.EXTENSIONS.get(options).addAll(FlexmarkExtensionUtils.getAllExtensionInClasspath());
         HtmlRenderer.RENDER_HEADER_ID.set( options, true);
+        String  secret=null;
+        if(context.getDocumentModel().containsKey("secret")) {
+        	secret=(String) context.getDocumentModel().get("secret");
+        }else {
+        	secret=(String) context.getConfig().get("default.secret");
+        }
+        ToBeEncrypteNodeRender.SECRET.set(options, secret);
+        
         Parser parser = Parser.builder(options).build();
+        
         HtmlRenderer renderer = HtmlRenderer.builder(options).build();
         
         Document document = parser.parse(context.getBody());
