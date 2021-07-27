@@ -49,7 +49,7 @@ public class OrderNoTest {
 		 Parser parser = Parser.builder(options).build();
      
      HtmlRenderer renderer = HtmlRenderer.builder(options).build();
-     FileInputStream fin=new FileInputStream("test-data/no-test.md");
+     FileInputStream fin=new FileInputStream("test-data/start-mindmap.md");
      Document document=parser
     		 .parseReader(new InputStreamReader(fin, Charset.forName("utf-8")));
      String s1= renderer.render(document);

@@ -41,7 +41,7 @@ public class PlantUMLCodeNodeRenderer implements NodeRenderer {
             html.line();
             html.tag("div");
             @NotNull
-            List<BasedSequence> lines = node.getContentLines(1, node.getLineCount() - 1);
+            List<BasedSequence> lines = node.getContentLines(0, node.getLineCount());//node.getContentLines(1, node.getLineCount() - 1);
             String plantUml = lines.stream().map(BasedSequence::toString).reduce((s1, s2) -> {
                 return s1.toString() + "\r\n" + s2.toString();
             }).get().toString();
