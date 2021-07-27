@@ -18,10 +18,10 @@ import net.sourceforge.plantuml.core.DiagramDescription;
 public class GenerateSvgTest {
 
 	public static void main(String[] args) throws IOException {
-		 String s=FileUtils.readFileToString(new File("test-data/start-mindmap.puml"),
+		 String s=FileUtils.readFileToString(new File("test-data/hm.puml"),
 				 Charset.forName("utf-8"));
         String svg=test(s);
-        System.out.println(s);
+        //System.out.println(s);
         System.out.println(svg);
 	}
 	
