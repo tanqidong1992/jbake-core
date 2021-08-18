@@ -8,9 +8,9 @@ import com.vladsch.flexmark.util.sequence.BasedSequence;
 
 public class ToBeEncrypteNode  extends Node implements DelimitedNode{
 
-	  protected BasedSequence openingMarker = BasedSequence.NULL;
-	    protected BasedSequence text = BasedSequence.NULL;
-	    protected BasedSequence closingMarker = BasedSequence.NULL;
+	protected BasedSequence openingMarker = BasedSequence.NULL;
+	protected BasedSequence text = BasedSequence.NULL;
+	protected BasedSequence closingMarker = BasedSequence.NULL;
 
 	    @NotNull
 	    @Override

@@ -98,6 +98,12 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-nop</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<!--  
+		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.5</version>
@@ -107,42 +113,17 @@
 			<artifactId>logback-core</artifactId>
 			<version>1.2.5</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>1.10</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-vfs2</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.12.0</version>
-		</dependency>
+		-->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
-
 			<exclusions>
 				<exclusion>
 					<artifactId>junit</artifactId>
 					<groupId>junit</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.orientechnologies</groupId>
-			<artifactId>orientdb-core</artifactId>
-			<version>3.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.asciidoctor</groupId>
@@ -200,11 +181,6 @@
 			<version>11.0.6</version>
 		</dependency>
 		<dependency>
-			<groupId>args4j</groupId>
-			<artifactId>args4j</artifactId>
-			<version>2.33</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
 			<version>1.10</version>
@@ -215,29 +191,14 @@
 			<version>2.8.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>11.0.6</version>
-		</dependency>
-		<dependency>
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
 			<version>2.33</version>
 		</dependency>
 		<dependency>
-			<groupId>org.asciidoctor</groupId>
-			<artifactId>asciidoctorj</artifactId>
-			<version>2.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-			<version>1.7.32</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
+			<version>2.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.orientechnologies</groupId>
@@ -295,7 +256,10 @@
 			<plugin>
 				<groupId>com.hngd.tool</groupId>
 				<artifactId>service-maven-plugin</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>0.2.1-SNAPSHOT</version>
+				<configuration>
+					<customRuntimeImage>true</customRuntimeImage>
+				</configuration>
 				<executions>
 					<execution>
 						<id>service-package</id>
