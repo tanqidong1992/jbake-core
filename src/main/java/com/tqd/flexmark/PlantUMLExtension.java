@@ -1,5 +1,6 @@
 package com.tqd.flexmark;
 
+import com.tqd.plantuml.DitaaReplaceUtils;
 import org.jetbrains.annotations.NotNull;
  
 import com.vladsch.flexmark.html.HtmlRenderer.Builder;
@@ -8,6 +9,10 @@ import com.vladsch.flexmark.util.data.MutableDataHolder;
 
 public class PlantUMLExtension implements HtmlRendererExtension{
 
+    static {
+        //ditta svg supported
+        DitaaReplaceUtils.replace();
+    }
 	 @Override
      public void rendererOptions(@NotNull MutableDataHolder options) {
 
