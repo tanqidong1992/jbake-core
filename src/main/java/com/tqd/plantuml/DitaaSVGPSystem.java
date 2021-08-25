@@ -119,7 +119,7 @@ public class DitaaSVGPSystem extends AbstractPSystem {
                 SVGBitmapRender  svgBitmapRender=new SVGBitmapRender();
                 SVGGraphics2D g2=svgBitmapRender.render((Diagram)diagram,(RenderingOptions)renderingOptions);
                 Writer out = new OutputStreamWriter(os, StandardCharsets.UTF_8);
-                g2.stream(out,true);
+                g2.stream(out,false);
                 final int width = ((Diagram)diagram).getWidth();
                 final int height = ((Diagram)diagram).getHeight();
                 return new ImageDataSimple(width, height);

@@ -45,7 +45,7 @@ public class PlantUMLCodeNodeRenderer implements NodeRenderer {
             String plantUml = lines.stream().map(BasedSequence::toString).reduce((s1, s2) -> {
                 return s1.toString() + "\r\n" + s2.toString();
             }).get().toString();
-            String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(plantUml);
+            String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(plantUml,false);
             html.append(svg);
             html.tag("/div");
 
