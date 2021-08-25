@@ -1,24 +1,21 @@
 package org.jbake.parser;
 
-import org.jbake.app.Crawler;
-import org.jbake.app.configuration.JBakeConfiguration;
-import org.json.simple.JSONObject;
-
 import com.google.gson.GsonBuilder;
 import com.tqd.flexmark.toc.Toc;
+import org.jbake.app.Crawler;
+import org.jbake.app.configuration.JBakeConfiguration;
+import org.jbake.model.DocumentModel;
 
 import java.io.File;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ParserContext {
     private final File file;
     private final List<String> fileLines;
     private final JBakeConfiguration config;
     private final boolean hasHeader;
-    private final Map<String,Object> documentModel;
+    private final DocumentModel documentModel;
 
     public ParserContext(
             File file,
@@ -29,7 +26,7 @@ public class ParserContext {
         this.fileLines = fileLines;
         this.config = config;
         this.hasHeader = hasHeader;
-        this.documentModel = new HashMap<>();
+        this.documentModel = DocumentModel.createDefaultDocumentModel();
     }
 
     public File getFile() {
@@ -44,7 +41,7 @@ public class ParserContext {
         return config;
     }
 
-    public Map<String, Object> getDocumentModel() {
+    public DocumentModel getDocumentModel() {
         return documentModel;
     }
 
@@ -54,54 +51,51 @@ public class ParserContext {
 
     // short methods for common use
     public String getBody() {
-        return documentModel.get(Crawler.Attributes.BODY).toString();
+        return documentModel.getBody();
     }
 
     public void setBody(String str) {
-        documentModel.put(Crawler.Attributes.BODY, str);
+        documentModel.setBody(str);
     }
-    
     public void setToc(Toc toc) {
-    	 
-    	String s=new GsonBuilder().setPrettyPrinting().create().toJson(toc);
-        documentModel.put(Crawler.Attributes.TOC, s);
+        String s=new GsonBuilder().setPrettyPrinting().create().toJson(toc);
+        documentModel.setToc(s);
     }
-    
-    public Object getDate() {
-        return getDocumentModel().get(Crawler.Attributes.DATE);
+    public Date getDate() {
+        return getDocumentModel().getDate();
     }
 
     public void setDate(Date date) {
-        getDocumentModel().put(Crawler.Attributes.DATE, date);
+        getDocumentModel().setDate(date);
     }
 
     public String getStatus() {
-        if (getDocumentModel().containsKey(Crawler.Attributes.STATUS)) {
-            return getDocumentModel().get(Crawler.Attributes.STATUS).toString();
+        if (getDocumentModel().getStatus() != null) {
+            return getDocumentModel().getStatus();
         }
         return "";
     }
 
     public void setDefaultStatus() {
-        getDocumentModel().put(Crawler.Attributes.STATUS, getConfig().getDefaultStatus());
+        getDocumentModel().setStatus(getConfig().getDefaultStatus());
     }
 
     public String getType() {
-        if (getDocumentModel().containsKey(Crawler.Attributes.TYPE)) {
-            return getDocumentModel().get(Crawler.Attributes.TYPE).toString();
+        if (getDocumentModel().getType() != null) {
+            return getDocumentModel().getType();
         }
         return "";
     }
 
     public void setDefaultType() {
-        getDocumentModel().put(Crawler.Attributes.TYPE, getConfig().getDefaultType());
+        getDocumentModel().setType(getConfig().getDefaultType());
     }
 
     public Object getTags() {
-        return getDocumentModel().get(Crawler.Attributes.TAGS);
+        return getDocumentModel().getTags();
     }
 
     public void setTags(String[] tags) {
-        getDocumentModel().put(Crawler.Attributes.TAGS, tags);
+        getDocumentModel().setTags(tags);
     }
 }

@@ -3,7 +3,6 @@ package com.tqd.plantuml;
 import net.sourceforge.plantuml.PSystemBuilder;
 import net.sourceforge.plantuml.api.PSystemFactory;
 import net.sourceforge.plantuml.core.DiagramType;
-import net.sourceforge.plantuml.ditaa.PSystemDitaaFactory;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;

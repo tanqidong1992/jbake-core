@@ -19,7 +19,6 @@ public class DotImageTest {
                 }
                 @enduml
                 """;
-
         String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(s,false);
         System.out.println(svg);
         FileUtils.write(new File("target","test.svg"),svg, StandardCharsets.UTF_8);

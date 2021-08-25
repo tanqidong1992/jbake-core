@@ -1,7 +1,5 @@
 package org.jbake.parser;
 
-import com.tqd.flexmark.PlantUMLExtension;
-import com.tqd.flexmark.encryptor.internal.ToBeEncrypteNodeRender;
 import com.tqd.flexmark.toc.Toc;
 import com.tqd.flexmark.utils.FlexmarkExtensionUtils;
 import com.vladsch.flexmark.ast.Heading;
@@ -11,12 +9,7 @@ import com.vladsch.flexmark.parser.PegdownExtensions;
 import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.data.DataHolder;
-import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-
-import org.jetbrains.annotations.NotNull;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,47 +44,37 @@ public class MarkdownEngine extends MarkupEngine {
             }
         }
 
+        //DataHolder options = PegdownOptionsAdapter.flexmarkOptions(extensions);
+
         DataHolder options1 = PegdownOptionsAdapter.flexmarkOptions(extensions);
         MutableDataSet options=new MutableDataSet(options1);
         Parser.EXTENSIONS.get(options).addAll(FlexmarkExtensionUtils.getAllExtensionInClasspath());
         HtmlRenderer.RENDER_HEADER_ID.set( options, true);
-        String  secret=null;
-        if(context.getDocumentModel().containsKey("secret")) {
-        	secret=(String) context.getDocumentModel().get("secret");
-        }else {
-        	secret=(String) context.getConfig().get("default.secret");
-        }
-        ToBeEncrypteNodeRender.SECRET.set(options, secret);
-        
+
         Parser parser = Parser.builder(options).build();
-        
         HtmlRenderer renderer = HtmlRenderer.builder(options).build();
-        
+
         Document document = parser.parse(context.getBody());
-        
         context.setBody(renderer.render(document));
-        //render ֮��,�Ż���html id
-        parseToc(document,context);
-        
     }
 
     private void parseToc(Document document,final ParserContext context) {
-		
-    	List<Heading> headings=new ArrayList<>();
+
+        List<Heading> headings=new ArrayList<>();
         document.getChildIterator().forEachRemaining(n->{
-       	  if(n instanceof Heading) {
-       		  headings.add((Heading)n);
-       	  }
-         });
+            if(n instanceof Heading) {
+                headings.add((Heading)n);
+            }
+        });
         Toc toc=new Toc();
         for(Heading h:headings) {
-            toc.addHeading(h); 
+            toc.addHeading(h);
         }
         context.setToc(toc);
-		
-	}
 
-	private int extensionFor(String name) {
+    }
+
+    private int extensionFor(String name) {
         int extension = PegdownExtensions.NONE;
 
         try {
