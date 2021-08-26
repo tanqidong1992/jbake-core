@@ -102,7 +102,7 @@ public class ImageGenerator {
                 plantUml = plantUml + LINE_SEPARATOR + ENDUML;
             }
 
-            SourceStringReader reader = new SourceStringReader(plantUml);
+            SourceStringReaderExt reader = new SourceStringReaderExt(plantUml);
 
 
             FileFormatOption fileFormatOption = new FileFormatOption(FileFormat.SVG);
@@ -143,6 +143,30 @@ public class ImageGenerator {
             } else {
                 return svg;
             }
+        } catch (Exception e) {
+            throw new PlantumlRuntimeException("PlantUML: " + plantUml, e);
+        }
+    }
+
+    public SVGExt generateSvgFromPlantUmlExt(String plantUml) {
+        try (final ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            if (!plantUml.trim().startsWith(STARTUML)) {
+                plantUml = STARTUML + LINE_SEPARATOR + plantUml;
+            }
+            if (!plantUml.trim().endsWith(ENDUML)) {
+                plantUml = plantUml + LINE_SEPARATOR + ENDUML;
+            }
+
+            SourceStringReaderExt reader = new SourceStringReaderExt(plantUml);
+
+            FileFormatOption fileFormatOption = new FileFormatOption(FileFormat.SVG);
+            DiagramDescriptionExt diagramDescription = reader.outputImageExt(os, 0,fileFormatOption);
+            logger.info("DiagramDescription: {}", diagramDescription.getDescription());
+
+            // The XML is stored into svg
+            String svg = os.toString(StandardCharsets.UTF_8.name());
+            return new SVGExt(svg,diagramDescription.getImageData().getWidth(),diagramDescription.getImageData().getHeight());
+
         } catch (Exception e) {
             throw new PlantumlRuntimeException("PlantUML: " + plantUml, e);
         }
