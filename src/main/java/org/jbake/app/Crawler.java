@@ -210,14 +210,10 @@ public class Crawler {
     // TODO: Refactor - parametrize the following two methods into one.
     // commons-codec's URLCodec could be used when we add that dependency.
     private String createUri(String uri) {
-        try {
-            return FileUtil.URI_SEPARATOR_CHAR
+        return FileUtil.URI_SEPARATOR_CHAR
                 + FilenameUtils.getPath(uri)
-                + URLEncoder.encode(FilenameUtils.getBaseName(uri), StandardCharsets.UTF_8.name())
+                + FilenameUtils.getBaseName(uri)
                 + config.getOutputExtension();
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Missing UTF-8 encoding??", e); // Won't happen unless JDK is broken.
-        }
     }
 
     private String createNoExtensionUri(String uri) {
