@@ -1,5 +1,6 @@
 package org.jbake.launcher;
 
+import com.tqd.plantuml.DitaaReplaceUtils;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.jbake.app.FileUtil;
 import org.jbake.app.JBakeException;
@@ -56,6 +57,7 @@ public class Main {
      * @param args Application arguments
      */
     public static void main(final String[] args) {
+        DitaaReplaceUtils.replace();
         try {
             new Main().run(args);
         } catch (final JBakeException e) {

@@ -9,10 +9,6 @@ import com.vladsch.flexmark.util.data.MutableDataHolder;
 
 public class PlantUMLExtension implements HtmlRendererExtension{
 
-    static {
-        //ditta svg supported
-        DitaaReplaceUtils.replace();
-    }
 	 @Override
      public void rendererOptions(@NotNull MutableDataHolder options) {
 

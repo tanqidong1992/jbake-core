@@ -1,9 +1,13 @@
 package com.tqd.flexmark;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.vladsch.flexmark.html.renderer.*;
+import com.vladsch.flexmark.util.html.MutableAttributes;
+import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,12 +18,6 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.misc.CharPredicate;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
-
-import com.vladsch.flexmark.html.renderer.CoreNodeRenderer;
-import com.vladsch.flexmark.html.renderer.NodeRenderer;
-import com.vladsch.flexmark.html.renderer.NodeRendererContext;
-import com.vladsch.flexmark.html.renderer.NodeRendererFactory;
-import com.vladsch.flexmark.html.renderer.NodeRenderingHandler;
 
 public class PlantUMLCodeNodeRenderer implements NodeRenderer {
     final private boolean codeContentBlock;
@@ -45,9 +43,19 @@ public class PlantUMLCodeNodeRenderer implements NodeRenderer {
             String plantUml = lines.stream().map(BasedSequence::toString).reduce((s1, s2) -> {
                 return s1.toString() + "\r\n" + s2.toString();
             }).get().toString();
-            String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(plantUml);
-            html.append(svg);
-            html.tag("/div");
+            String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(plantUml,false);
+            //html.append(svg);
+            MutableAttributes attributes=new MutableAttributes();
+            String base64=Base64.encodeBase64String(svg.getBytes(StandardCharsets.UTF_8));
+            attributes.addValue("src","data:image/svg+xml;base64,"+base64);
+            attributes.addValue("height","100%");
+            html.setAttributes(attributes).withAttr().tag("img").tag("/img");
+            AttributablePart ap=new AttributablePart("");
+
+
+            //<img src="data:image/svg+xml;base64,"/>
+
+                    html.tag("/div");
 
         } else {
             render1(node, context, html);

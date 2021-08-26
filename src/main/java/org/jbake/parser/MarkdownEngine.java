@@ -56,6 +56,7 @@ public class MarkdownEngine extends MarkupEngine {
 
         Document document = parser.parse(context.getBody());
         context.setBody(renderer.render(document));
+        parseToc(document,context);
     }
 
     private void parseToc(Document document,final ParserContext context) {

@@ -23,6 +23,9 @@ public class DocumentModel extends BaseModel {
     public void setToc(String toc){
         put(ModelAttributes.TOC, toc);
     }
+    public String getToc(){
+        return (String) get(ModelAttributes.TOC);
+    }
     public Date getDate() {
         return (Date) get(ModelAttributes.DATE);
     }
