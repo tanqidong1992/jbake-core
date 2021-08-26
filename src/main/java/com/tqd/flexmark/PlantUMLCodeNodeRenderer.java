@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.tqd.plantuml.DitaaReplaceUtils;
+import com.tqd.plantuml.ImageGenerator;
+import com.tqd.plantuml.SVGExt;
 import com.vladsch.flexmark.html.renderer.*;
 import com.vladsch.flexmark.util.html.MutableAttributes;
 import org.apache.commons.codec.binary.Base64;
@@ -20,6 +23,10 @@ import com.vladsch.flexmark.util.misc.CharPredicate;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 
 public class PlantUMLCodeNodeRenderer implements NodeRenderer {
+
+    static {
+        DitaaReplaceUtils.replace();
+    }
     final private boolean codeContentBlock;
 
     public PlantUMLCodeNodeRenderer(DataHolder options) {
@@ -33,29 +40,37 @@ public class PlantUMLCodeNodeRenderer implements NodeRenderer {
         return set;
     }
 
+    private static boolean isDitaa(List<BasedSequence> lines){
+        return lines.stream().map(BasedSequence::toString)
+                .map(String::trim)
+                .filter(s->s.equals("ditaa"))
+                .findAny().isPresent();
+    }
+
     void render(FencedCodeBlock node, NodeRendererContext context, HtmlWriter html) {
 
         if (node.getInfo().toString().equals("plantuml")) {
             html.line();
             html.tag("div");
             @NotNull
-            List<BasedSequence> lines = node.getContentLines(0, node.getLineCount());//node.getContentLines(1, node.getLineCount() - 1);
-            String plantUml = lines.stream().map(BasedSequence::toString).reduce((s1, s2) -> {
-                return s1.toString() + "\r\n" + s2.toString();
-            }).get().toString();
-            String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(plantUml,false);
-            //html.append(svg);
-            MutableAttributes attributes=new MutableAttributes();
-            String base64=Base64.encodeBase64String(svg.getBytes(StandardCharsets.UTF_8));
-            attributes.addValue("src","data:image/svg+xml;base64,"+base64);
-            attributes.addValue("height","100%");
-            html.setAttributes(attributes).withAttr().tag("img").tag("/img");
-            AttributablePart ap=new AttributablePart("");
+            List<BasedSequence> lines = node.getContentLines(0, node.getLineCount());
+            String plantUml = lines.stream().map(BasedSequence::toString).reduce((s1, s2) -> s1 + "\r\n" + s2).get();
+            if(isDitaa(lines)){
+                SVGExt svg = ImageGenerator.getInstance().generateSvgFromPlantUmlExt(plantUml);
+                MutableAttributes attributes=new MutableAttributes();
+                String base64=Base64.encodeBase64String(svg.getSvg().getBytes(StandardCharsets.UTF_8));
+                //<img src="data:image/svg+xml;base64,"/>
+                attributes.addValue("src","data:image/svg+xml;base64,"+base64);
+                attributes.addValue("height",svg.getHeight()+"px");
+                attributes.addValue("width",svg.getWidth()+"px");
+                html.setAttributes(attributes).withAttr().tag("img").tag("/img");
+                AttributablePart ap=new AttributablePart("");
+            }else{
+                String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(plantUml,false);
+                html.append(svg);
+            }
 
-
-            //<img src="data:image/svg+xml;base64,"/>
-
-                    html.tag("/div");
+            html.tag("/div");
 
         } else {
             render1(node, context, html);

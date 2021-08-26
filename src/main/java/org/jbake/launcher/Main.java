@@ -57,7 +57,6 @@ public class Main {
      * @param args Application arguments
      */
     public static void main(final String[] args) {
-        DitaaReplaceUtils.replace();
         try {
             new Main().run(args);
         } catch (final JBakeException e) {
