@@ -1,5 +1,7 @@
 package com.tqd.flexmark;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
@@ -7,10 +9,11 @@ import java.util.Set;
 
 import com.tqd.plantuml.DitaaReplaceUtils;
 import com.tqd.plantuml.ImageGenerator;
-import com.tqd.plantuml.SVGExt;
+import com.tqd.plantuml.ImageExt;
 import com.vladsch.flexmark.html.renderer.*;
 import com.vladsch.flexmark.util.html.MutableAttributes;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,15 +57,20 @@ public class PlantUMLCodeNodeRenderer implements NodeRenderer {
             html.tag("div");
             @NotNull
             List<BasedSequence> lines = node.getContentLines(0, node.getLineCount());
-            String plantUml = lines.stream().map(BasedSequence::toString).reduce((s1, s2) -> s1 + "\r\n" + s2).get();
+            String plantUml = lines.stream().map(BasedSequence::toString).reduce((s1, s2) -> s1 + s2).get();
             if(isDitaa(lines)){
-                SVGExt svg = ImageGenerator.getInstance().generateSvgFromPlantUmlExt(plantUml);
+                var image = ImageGenerator.getInstance().generatePngFromPlantUmlExt(plantUml);
+                try {
+                    FileUtils.writeByteArrayToFile(new File("target","ditaa-1.png"), image.getData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 MutableAttributes attributes=new MutableAttributes();
-                String base64=Base64.encodeBase64String(svg.getSvg().getBytes(StandardCharsets.UTF_8));
+                String base64=Base64.encodeBase64String(image.getData());
                 //<img src="data:image/svg+xml;base64,"/>
-                attributes.addValue("src","data:image/svg+xml;base64,"+base64);
-                attributes.addValue("height",svg.getHeight()+"px");
-                attributes.addValue("width",svg.getWidth()+"px");
+                attributes.addValue("src","data:image/png;base64,"+base64);
+                //attributes.addValue("height",image.getHeight()+"px");
+                //attributes.addValue("width",image.getWidth()+"px");
                 html.setAttributes(attributes).withAttr().tag("img").tag("/img");
                 AttributablePart ap=new AttributablePart("");
             }else{

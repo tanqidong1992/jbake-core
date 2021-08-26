@@ -1,17 +1,17 @@
 package com.tqd.plantuml;
 
-public class SVGExt {
+public class ImageExt<T> {
 
-    private String svg;
+    private T data;
     private int width;
     private int height;
 
-    public String getSvg() {
-        return svg;
+    public T getData() {
+        return data;
     }
 
-    public void setSvg(String svg) {
-        this.svg = svg;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public int getWidth() {
@@ -30,8 +30,8 @@ public class SVGExt {
         this.height = height;
     }
 
-    public SVGExt(String svg, int width, int height) {
-        this.svg = svg;
+    public ImageExt(T data, int width, int height) {
+        this.data = data;
         this.width = width;
         this.height = height;
     }

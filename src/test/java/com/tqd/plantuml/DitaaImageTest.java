@@ -32,15 +32,13 @@ ditaa
 @enduml
                 """;
         SourceStringReader reader = new SourceStringReader(plantUml);
-
-
         FileFormatOption fileFormatOption = new FileFormatOption(FileFormat.SVG);
         ByteArrayOutputStream os=new ByteArrayOutputStream();
         DiagramDescription diagramDescription = reader.outputImage(os, fileFormatOption);
 
         FileUtils.writeByteArrayToFile(new File("target","ditaa.png"), os.toByteArray());
         DitaaReplaceUtils.replace();
-        String svg = SvgGeneratorService.getInstance().generateSvgFromPlantUml(plantUml,false);
+        String svg = ImageGenerator.getInstance().generateSvgFromPlantUml(plantUml,false);
         System.out.println(svg);
         FileUtils.write(new File("target","ditaa.svg"),svg, StandardCharsets.UTF_8);
 

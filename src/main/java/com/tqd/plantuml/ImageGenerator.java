@@ -4,7 +4,6 @@ import com.credibledoc.plantuml.exception.PlantumlRuntimeException;
 import com.credibledoc.plantuml.svggenerator.SvgGeneratorService;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.core.DiagramDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,8 +146,26 @@ public class ImageGenerator {
             throw new PlantumlRuntimeException("PlantUML: " + plantUml, e);
         }
     }
+    public ImageExt<byte[]> generatePngFromPlantUmlExt(String plantUml) {
+        try (final ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            if (!plantUml.trim().startsWith(STARTUML)) {
+                plantUml = STARTUML + LINE_SEPARATOR + plantUml;
+            }
+            if (!plantUml.trim().endsWith(ENDUML)) {
+                plantUml = plantUml + LINE_SEPARATOR + ENDUML;
+            }
 
-    public SVGExt generateSvgFromPlantUmlExt(String plantUml) {
+            SourceStringReaderExt reader = new SourceStringReaderExt(plantUml);
+
+            FileFormatOption fileFormatOption = new FileFormatOption(FileFormat.PNG);
+            DiagramDescriptionExt diagramDescription = reader.outputImageExt(os, 0,fileFormatOption);
+            logger.info("DiagramDescription: {}", diagramDescription.getDescription());
+            return new ImageExt(os.toByteArray(),diagramDescription.getImageData().getWidth(),diagramDescription.getImageData().getHeight());
+        } catch (Exception e) {
+            throw new PlantumlRuntimeException("PlantUML: " + plantUml, e);
+        }
+    }
+    public ImageExt<String> generateSvgFromPlantUmlExt(String plantUml) {
         try (final ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             if (!plantUml.trim().startsWith(STARTUML)) {
                 plantUml = STARTUML + LINE_SEPARATOR + plantUml;
@@ -165,8 +182,7 @@ public class ImageGenerator {
 
             // The XML is stored into svg
             String svg = os.toString(StandardCharsets.UTF_8.name());
-            return new SVGExt(svg,diagramDescription.getImageData().getWidth(),diagramDescription.getImageData().getHeight());
-
+            return new ImageExt(svg,diagramDescription.getImageData().getWidth(),diagramDescription.getImageData().getHeight());
         } catch (Exception e) {
             throw new PlantumlRuntimeException("PlantUML: " + plantUml, e);
         }
