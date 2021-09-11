@@ -325,12 +325,13 @@ public abstract class MarkupEngine implements ParserEngine {
                 inBody = true;
             }
         }
-
+        /**
         if (body.length() == 0) {
             for (String line : context.getFileLines()) {
                 body.append(line).append("\n");
             }
         }
+         */
         context.setBody(body.toString());
     }
 }
