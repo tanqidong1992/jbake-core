@@ -1,5 +1,8 @@
 package org.jbake.parser;
 
+import com.tqd.flexmark.encryptor.EncryptorExtension;
+import com.tqd.flexmark.encryptor.internal.EncryptorDelimiterProcessor;
+import com.tqd.flexmark.encryptor.internal.ToBeEncrypteNodeRender;
 import com.tqd.flexmark.toc.Toc;
 import com.tqd.flexmark.utils.FlexmarkExtensionUtils;
 import com.vladsch.flexmark.ast.Heading;
@@ -46,13 +49,24 @@ public class MarkdownEngine extends MarkupEngine {
 
         //DataHolder options = PegdownOptionsAdapter.flexmarkOptions(extensions);
 
-        DataHolder options1 = PegdownOptionsAdapter.flexmarkOptions(extensions);
-        MutableDataSet options=new MutableDataSet(options1);
-        Parser.EXTENSIONS.get(options).addAll(FlexmarkExtensionUtils.getAllExtensionInClasspath());
-        HtmlRenderer.RENDER_HEADER_ID.set( options, true);
+        DataHolder baseOptions = PegdownOptionsAdapter.flexmarkOptions(extensions);
+        MutableDataSet extendedOptions=new MutableDataSet(baseOptions);
 
-        Parser parser = Parser.builder(options).build();
-        HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+        var defaultSecret=context.getConfig().get("default.secret");
+        var secret=context.getDocumentModel().get("secret");
+        if(secret==null){
+            secret=defaultSecret;
+        }
+        if(secret instanceof String ){
+            ToBeEncrypteNodeRender.SECRET.set(extendedOptions,secret.toString());
+        }
+
+        Parser.EXTENSIONS.get(extendedOptions).addAll(FlexmarkExtensionUtils.getAllExtensionInClasspath());
+        HtmlRenderer.RENDER_HEADER_ID.set(extendedOptions, true);
+
+        Parser parser = Parser.builder(extendedOptions).build();
+        HtmlRenderer renderer = HtmlRenderer.builder(extendedOptions).build();
+
 
         Document document = parser.parse(context.getBody());
         context.setBody(renderer.render(document));
