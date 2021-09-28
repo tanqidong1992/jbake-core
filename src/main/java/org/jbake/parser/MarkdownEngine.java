@@ -1,8 +1,6 @@
 package org.jbake.parser;
 
-import com.tqd.flexmark.encryptor.EncryptorExtension;
-import com.tqd.flexmark.encryptor.internal.EncryptorDelimiterProcessor;
-import com.tqd.flexmark.encryptor.internal.ToBeEncrypteNodeRender;
+import com.tqd.flexmark.encryptor.internal.ToBeEncryptNodeRender;
 import com.tqd.flexmark.toc.Toc;
 import com.tqd.flexmark.utils.FlexmarkExtensionUtils;
 import com.vladsch.flexmark.ast.Heading;
@@ -58,7 +56,7 @@ public class MarkdownEngine extends MarkupEngine {
             secret=defaultSecret;
         }
         if(secret instanceof String ){
-            ToBeEncrypteNodeRender.SECRET.set(extendedOptions,secret.toString());
+            ToBeEncryptNodeRender.SECRET.set(extendedOptions,secret.toString());
         }
 
         Parser.EXTENSIONS.get(extendedOptions).addAll(FlexmarkExtensionUtils.getAllExtensionInClasspath());
